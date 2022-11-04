@@ -393,6 +393,15 @@ func (s *ClientSuite) TestExtraRootSignaturesOnInit(c *C) {
 	c.Assert(client.Init(dataBytes), IsNil)
 }
 
+func (s *ClientSuite) TestTUFClient(c *C) {
+	var x TUFClient = s.newClient(c)
+
+	files, err := x.Update()
+	c.Assert(err, IsNil)
+	c.Assert(files, HasLen, 1)
+	assertFiles(c, files, []string{"foo.txt"})
+}
+
 func (s *ClientSuite) TestFirstUpdate(c *C) {
 	files, err := s.newClient(c).Update()
 	c.Assert(err, IsNil)
