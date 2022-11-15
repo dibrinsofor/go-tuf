@@ -4,6 +4,7 @@ import "github.com/theupdateframework/go-tuf/data"
 
 type TUFClient interface {
 	// Update downloads and verifies remote metadata and returns updated targets.
+	//
 	// It always performs root update (5.2 and 5.3) section of the v1.0.19 spec.
 	Update() (data.TargetFiles, error)
 
@@ -18,6 +19,9 @@ type TUFClient interface {
 	//   - Generated metadata does not match local metadata for the given file
 	Download(name string, dest Destination) (err error)
 
+	// VerifyDigest verifies a target at the given path by its digest.
+	//
+	// This is useful in contexts where the targets are distributed via some channel besides TUF (e.g., OCI registries).
 	VerifyDigest(digest string, digestAlg string, length int64, path string) error
 
 	// Target returns the target metadata for a specific target if it
